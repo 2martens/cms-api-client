@@ -1,36 +1,30 @@
 import configparser
 
-def get_git_dir():
-    'Returns the configured git dir'
-    config = read_config()
-    return config['Git']['dir']
+class Config:
+    'Config accessor class'
+    def __init__(self, configfile='config.ini'):
+        self.__configfile = configfile
 
-def set_git_dir(git_dir):
-    'Sets the git dir in the config file'
-    config = read_config()
-    config['Git']['dir'] = git_dir
-    write_config(config)
+    def get(self, section, key):
+        'Returns a config value'
+        config = self.__read())
+        return config[section][key]
 
-def get_api_key():
-    'Returns the configured API key'
-    config = read_config()
-    return config['General']['apikey']
+    def set(self, section, key, value):
+        'Sets a config value'
+        config = self.__read()
+        config[section][key] = value
+        self.__write(config)
 
-def set_api_key(apikey):
-    'Sets the api key in the config file'
-    config = read_config()
-    config['General']['apikey'] = apikey
-    write_config(config)
+    def __read(self):
+        'Returns the config parser for the config file'
+        config = configparser.ConfigParser()
+        with open(self.__configfile, 'r') as configfile:
+            config.read_file(configfile)
+        return config
 
-def read_config():
-    'Returns the config parser for the config file'
-    config = configparser.ConfigParser()
-    with open('config.ini', 'r') as configfile:
-        config.read_file(configfile)
-    return config
-
-def write_config(config):
-    'Writes the config file for the given config'
-    with open('config.ini', 'w') as configfile:
-        config.write(configfile)
+    def __write(self, config):
+        'Writes the config file for the given config'
+        with open(self.__configfile, 'w') as configfile:
+            config.write(configfile)
 
