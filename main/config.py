@@ -25,10 +25,12 @@ def set_api_key(apikey):
 def read_config():
     'Returns the config parser for the config file'
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    with open('config.ini', 'r') as configfile:
+        config.read_file(configfile)
     return config
 
 def write_config(config):
     'Writes the config file for the given config'
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
+
