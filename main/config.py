@@ -39,7 +39,7 @@ class ConfigDialog(QDialog):
         super(ConfigDialog, self).__init__(parent)
 
         self.__config = Config()
-
+        # create form elements
         apiLabel = QLabel('API-Key')
         self.apiLine = QLineEdit()
         self.apiline.setText(self.__config.get('General', 'apikey'))
@@ -48,18 +48,18 @@ class ConfigDialog(QDialog):
         self.gitDirLine.setText(self.__config.get('Git', 'dir'))
         self.submitButton = QPushButton('&Submit')
 
+        # create layout
         buttonLayout = QVBoxLayout()
         buttonLayout.addWidget(apiLabel)
         buttonLayout.addWidget(self.apiLine)
         buttonLayout.addWidget(gitDirLabel)
         buttonLayout.addWidget(self.gitDirLine)
         buttonLayout.addWidget(self.submitButton)
-
+        # connect submit button with submit action
         self.submitButton.clicked.connect(self.submitForm)
 
         mainLayout = QGridLayout()
-        # mainLayout.addWidget(nameLabel, 0, 0)
-        mainLayout.addLayout(buttonLayout, 0, 1)
+        mainLayout.addLayout(buttonLayout, 0, 0)
 
         self.setLayout(mainLayout)
         self.setWindowTitle('Configuration')
