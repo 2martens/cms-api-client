@@ -34,7 +34,7 @@ class Config:
 
 class ConfigDialog(QDialog):
     'Dialog class for configuration dialog'
-    def __init__(self, parent=None):
+    def __init__(self, parent=0):
         'Initializes the dialog'
         super(ConfigDialog, self).__init__(parent)
 

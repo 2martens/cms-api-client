@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QVBoxLayout, QWidget
 
 class EditPanel(QWidget):
     'Represents the editing panel on the right side'
-    def __init__(self, layoutName, parent=None):
+    def __init__(self, layoutName, parent=0):
         'Initializes the editing panel'
         super(EditPanel, self).__init__(parent)
         self.__populateLayoutsDictionary()
