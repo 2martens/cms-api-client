@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QTreeView, QFileSystemModel
-from main.config import Config
+from CMSAPIConfig.main.config import Config
 
 class TreeView(QTreeView):
     'Represents the categories, contents, etc in the git repository'
