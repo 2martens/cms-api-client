@@ -2,9 +2,9 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QMenu, QMenuBar, QSplitter
 from PyQt5.QtGui import QKeySequence
-from CMSAPIClient.main.editing import EditPanel
-from CMSAPIClient.main.repo import TreeView
-from CMSAPIClient.main.config import ConfigDialog
+from main.editing import EditPanel
+from main.repo import TreeView
+from main.config import ConfigDialog
 
 class Main:
     'Main class of the application'

@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QVBoxLayout, QWidget
-from CMSAPIClient.io.files import read_file, write_file
+from io.files import read_file, write_file
 import json
 
 class EditPanel():
