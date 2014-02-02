@@ -32,12 +32,11 @@ class Config:
         with open(self.__configfile, 'w') as configfile:
             self.__config.write(configfile)
 
-class ConfigDialog(QDialog):
+class ConfigDialog():
     'Dialog class for configuration dialog'
     def __init__(self, parent=0):
         'Initializes the dialog'
-        super(ConfigDialog, self).__init__(parent)
-
+        self.__dialog = QDialog(parent)
         self.__config = Config()
         # create form elements
         apiLabel = QLabel('API-Key')
@@ -72,8 +71,12 @@ class ConfigDialog(QDialog):
         # connect submit button with submit action
         self.submitButton.clicked.connect(self.__submitForm)
 
-        self.setLayout(mainLayout)
-        self.setWindowTitle('Configuration')
+        self.__dialog.setLayout(mainLayout)
+        self.__dialog.setWindowTitle('Configuration')
+
+    def show(self):
+        'Shows the dialog'
+        self.__dialog.show()
 
     def __submitForm(self):
         'Submits the form'
@@ -87,4 +90,4 @@ class ConfigDialog(QDialog):
         self.__config.set('General', 'domain', domain)
         self.__config.set('General', 'resource', resource)
         self.__config.write()
-        self.hide()
+        self.__dialog.hide()
