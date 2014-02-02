@@ -52,7 +52,7 @@ class ConfigDialog(QDialog):
         gitDirLabel = QLabel('Git directory')
         self.gitDirLine = QLineEdit()
         self.gitDirLine.setText(self.__config.get('Git', 'dir'))
-        self.submitButton = QPushButton('&Submit')
+        self.submitButton = QPushButton('&Save')
 
         # create form layout
         formLayout = QGridLayout()
