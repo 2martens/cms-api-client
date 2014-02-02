@@ -42,24 +42,35 @@ class ConfigDialog(QDialog):
         # create form elements
         apiLabel = QLabel('API-Key')
         self.apiLine = QLineEdit()
-        self.apiline.setText(self.__config.get('General', 'apikey'))
+        self.apiLine.setText(self.__config.get('General', 'apikey'))
+        domainLabel = QLabel('Domain')
+        self.domainLine = QLineEdit()
+        self.domainLine.setText(self.__config.get('General', 'domain'))
+        appPathLabel = QLabel('Path to API')
+        self.appPathLine = QLineEdit()
+        self.appPathLine.setText(self.__config.get('General', 'resource'))
         gitDirLabel = QLabel('Git directory')
         self.gitDirLine = QLineEdit()
         self.gitDirLine.setText(self.__config.get('Git', 'dir'))
         self.submitButton = QPushButton('&Submit')
 
-        # create layout
-        buttonLayout = QVBoxLayout()
-        buttonLayout.addWidget(apiLabel)
-        buttonLayout.addWidget(self.apiLine)
-        buttonLayout.addWidget(gitDirLabel)
-        buttonLayout.addWidget(self.gitDirLine)
-        buttonLayout.addWidget(self.submitButton)
+        # create form layout
+        formLayout = QGridLayout()
+        formLayout.addWidget(apiLabel, 0, 0)
+        formLayout.addWidget(self.apiLine, 0, 1)
+        formLayout.addWidget(domainLabel, 1, 0)
+        formLayout.addWidget(self.domainLine, 1, 1)
+        formLayout.addWidget(appPathLabel, 2, 0)
+        formLayout.addWidget(self.appPathLine, 2, 1)
+        formLayout.addWidget(gitDirLabel, 3, 0)
+        formLayout.addWidget(self.gitDirLine, 3, 1)
+
+        # create main layout
+        mainLayout = QVBoxLayout()
+        mainLayout.addLayout(formLayout)
+        mainLayout.addWidget(self.submitButton)
         # connect submit button with submit action
         self.submitButton.clicked.connect(self.submitForm)
-
-        mainLayout = QGridLayout()
-        mainLayout.addLayout(buttonLayout, 0, 0)
 
         self.setLayout(mainLayout)
         self.setWindowTitle('Configuration')
@@ -67,8 +78,12 @@ class ConfigDialog(QDialog):
     def submitForm(self):
         'Submits the form'
         apiKey = self.apiLine.text()
+        domain = self.domainLine.text()
+        resource = self.appPathLine.text()
         gitDir = self.gitDirLine.text()
 
         self.__config.set('Git', 'dir', gitDir)
         self.__config.set('General', 'apikey', apiKey)
+        self.__config.set('General', 'domain', domain)
+        self.__config.set('General', 'resource', resource)
         self.__config.write()
