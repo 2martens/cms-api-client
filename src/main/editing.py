@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QVBoxLayout, QWidget
+from io.files import read_file, write_file
+import json
 
 class EditPanel():
     'Represents the editing panel on the right side'
@@ -10,12 +12,17 @@ class EditPanel():
 
     def setCurrentFile(self, file):
         'Updates the layout and reads existing values'
-        pass
+        # load file content
+        self.__currentFile = file
+        jsonData = read_file(self.__currentFile)
+        self.__data = json.loads(jsonData)
+        self.__useLayout(self.__data['type'])
+        self.__updateFormFields()
 
     def save(self):
         'Call to save the changes'
-        if (self.__layoutName == 'content'):
-            pass
+        jsonEncoded = json.dumps(self.__data)
+        write_file(self.__currentFile, jsonEncoded)
 
     def getWidget(self):
         'Returns the panel'
@@ -25,6 +32,10 @@ class EditPanel():
         'Uses the layout with the given name'
         self.__currentLayout = layoutName
         self.__panel.setLayout(self.__layouts['general']['layout'][layoutName])
+
+    def __updateFormFields(self):
+        'Updates the form fields'
+        pass
 
     def __populateLayoutsDictionary(self):
         'Populates the layouts dictionary'
