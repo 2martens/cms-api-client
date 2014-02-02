@@ -1,23 +1,30 @@
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QVBoxLayout, QWidget
 
-class EditPanel(QWidget):
+class EditPanel():
     'Represents the editing panel on the right side'
     def __init__(self, parent=0):
         'Initializes the editing panel'
-        super(EditPanel, self).__init__(parent)
+        self.__panel = QWidget(parent)
         self.__populateLayoutsDictionary()
-        self.useLayout('none')
+        self.__useLayout('none')
 
-    # wrapper for setLayout, use this instead of setLayout
-    def useLayout(self, layoutName):
-        'Uses the layout with the given name'
-        self.__currentLayout = layoutName
-        self.setLayout(self.__layouts['general']['layout'][layoutName])
+    def setCurrentFile(self, file):
+        'Updates the layout and reads existing values'
+        pass
 
     def save(self):
         'Call to save the changes'
         if (self.__layoutName == 'content'):
             pass
+
+    def getWidget(self):
+        'Returns the panel'
+        return self.__panel
+
+    def __useLayout(self, layoutName):
+        'Uses the layout with the given name'
+        self.__currentLayout = layoutName
+        self.__panel.setLayout(self.__layouts['general']['layout'][layoutName])
 
     def __populateLayoutsDictionary(self):
         'Populates the layouts dictionary'
