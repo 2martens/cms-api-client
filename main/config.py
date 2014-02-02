@@ -70,12 +70,12 @@ class ConfigDialog(QDialog):
         mainLayout.addLayout(formLayout)
         mainLayout.addWidget(self.submitButton)
         # connect submit button with submit action
-        self.submitButton.clicked.connect(self.submitForm)
+        self.submitButton.clicked.connect(self.__submitForm)
 
         self.setLayout(mainLayout)
         self.setWindowTitle('Configuration')
 
-    def submitForm(self):
+    def __submitForm(self):
         'Submits the form'
         apiKey = self.apiLine.text()
         domain = self.domainLine.text()
