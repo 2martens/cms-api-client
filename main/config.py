@@ -86,4 +86,4 @@ class ConfigDialog(QDialog):
         self.__config.set('General', 'domain', domain)
         self.__config.set('General', 'resource', resource)
         self.__config.write()
-        self.__dialog.hide()
+        self.hide()
