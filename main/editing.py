@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QVBoxLayout, QWidget
 
 class EditPanel(QWidget):
     'Represents the editing panel on the right side'
-    def __init__(self, layoutName, parent=0):
+    def __init__(self, parent=0):
         'Initializes the editing panel'
         super(EditPanel, self).__init__(parent)
         self.__populateLayoutsDictionary()
-        self.useLayout(layoutName)
+        self.useLayout('none')
 
     # wrapper for setLayout, use this instead of setLayout
     def useLayout(self, layoutName):
@@ -93,4 +93,5 @@ class EditPanel(QWidget):
         contentLayout.addWidget(self.__layouts['general']['label']['tags'], 6, 0)
         contentLayout.addWidget(self.__layouts['general']['fields']['tags'], 6, 1)
         
-        self.__layouts['general']['layout']['content']  = contentLayout  
+        self.__layouts['general']['layout']['content']  = contentLayout
+        self.__layouts['general']['layout']['none'] = QGridLayout()
