@@ -25,7 +25,7 @@ class EditPanel():
     def save(self):
         'Call to save the changes'
         data = self.__currentWidget.getData()
-        jsonEncoded = json.dumps(data)
+        jsonEncoded = json.dumps(data, indent=4, sort_keys=True)
         write_file(self.__currentFile, jsonEncoded)
 
     def getWidget(self):
