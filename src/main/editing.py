@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QVBoxLayout, QWidget, QStackedWidget
+from PyQt5.QtWidgets import QTextEdit
 from main.io.files import read_file, write_file
 import json
 
@@ -68,7 +69,8 @@ class ContentEditPanel(QWidget):
             'slug': self.__slugLine.text(),
             'metaDescription': self.__metaDescriptionLine.text(),
             'metaKeywords': self.__metaKeywordsLine.text(),
-            'tags': self.__tagsLine.text()
+            'tags': self.__tagsLine.text(),
+            'text': self.__textEdit.toPlainText()
         }
         return data
 
@@ -105,6 +107,9 @@ class ContentEditPanel(QWidget):
         
         self.__tags = QLabel('Tags')
         self.__tagsLine = QLineEdit()
+
+        self.__text = QLabel('Text')
+        self.__textEdit = QTextEdit()
         
         contentLayout = QGridLayout()
         contentLayout.addWidget(self.__idLabel, 0, 0)
@@ -121,6 +126,8 @@ class ContentEditPanel(QWidget):
         contentLayout.addWidget(self.__metaKeywordsLine, 5, 1)
         contentLayout.addWidget(self.__tags, 6, 0)
         contentLayout.addWidget(self.__tagsLine, 6, 1)
+        contentLayout.addWidget(self.__text, 7, 0)
+        contentLayout.addWidget(self.__textEdit, 7, 1)
         self.setLayout(contentLayout)
 
 class CategoryEditPanel(QWidget):
