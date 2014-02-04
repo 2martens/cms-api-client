@@ -83,12 +83,12 @@ class ContentEditPanel(QWidget):
         self.__metaDescriptionLine.setText(data['metaDescription'])
         self.__metaKeywordsLine.setText(data['metaKeywords'])
         self.__tagsLine.setText(data['tags'])
+        self.__textEdit.setPlainText(data['text'])
         
     def __createFormFields(self):
         'Creates the form fields'
         self.__idLabel = QLabel('ID')
-        self.__idLine = QLineEdit()
-        self.__idLine.setReadOnly(True)
+        self.__idLine = QLabel()
         
         self.__title = QLabel('Title')
         self.__titleLine = QLineEdit()
@@ -156,8 +156,7 @@ class CategoryEditPanel(QWidget):
     def __createFormFields(self):
         'Creates the form fields'
         self.__idLabel = QLabel('ID')
-        self.__idLine = QLineEdit()
-        self.__idLine.setReadOnly(True)
+        self.__idLine = QLabel()
         
         self.__title = QLabel('Title')
         self.__titleLine = QLineEdit()
@@ -207,8 +206,7 @@ class PageEditPanel(QWidget):
     def __createFormFields(self):
         'Creates the form fields'
         self.__idLabel = QLabel('ID')
-        self.__idLine = QLineEdit()
-        self.__idLine.setReadOnly(True)
+        self.__idLine = QLabel()
         
         self.__title = QLabel('Title')
         self.__titleLine = QLineEdit()
