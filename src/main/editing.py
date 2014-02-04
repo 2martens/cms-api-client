@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QGridLayout, QLabel, QLineEdit, QVBoxLayout, QWidget, QStackedWidget
-from PyQt5.QtWidgets import QTextEdit, QShortcut
+from PyQt5.QtWidgets import QFormLayout, QLabel, QLineEdit
+from PyQt5.QtWidgets import QTextEdit, QShortcut, QWidget, QStackedWidget
 from PyQt5.QtGui import QKeySequence
 from main.io.files import read_file, write_file
 import json
@@ -30,6 +30,9 @@ class EditPanel():
         data = self.__currentWidget.getData()
         jsonEncoded = json.dumps(data, indent=4, sort_keys=True)
         write_file(self.__currentFile, jsonEncoded)
+        self.__panel.parent().parent().setWindowModified(False)
+        if (self.__currentWidgetName == 'content'):
+            self.__currentWidget.setModified(False)
 
     def getWidget(self):
         'Returns the panel'
@@ -62,6 +65,10 @@ class ContentEditPanel(QWidget):
         super(ContentEditPanel, self).__init__(parent)
         self.__createFormFields()
 
+    def setModified(self, modified):
+        'Sets the document modified state to modified'
+        self.__document.setModified(modified)
+
     def getData(self):
         'Returns the contents of the form fields'
         data = {
@@ -90,60 +97,49 @@ class ContentEditPanel(QWidget):
         
     def __createFormFields(self):
         'Creates the form fields'
-        self.__idLabel = QLabel('ID')
         self.__idLine = QLabel()
         
-        self.__title = QLabel('Title')
         self.__titleLine = QLineEdit()
-        self.__titleLine.textEdited.connect(self.__markAsModified)
+        self.__titleLine.textEdited.connect(self.__setModified)
         
-        self.__description = QLabel('Description')
         self.__descriptionLine = QLineEdit()
-        self.__descriptionLine.textEdited.connect(self.__markAsModified)
+        self.__descriptionLine.textEdited.connect(self.__setModified)
 
-        self.__slug = QLabel('Slug')
         self.__slugLine = QLineEdit()
-        self.__slugLine.textEdited.connect(self.__markAsModified)
+        self.__slugLine.textEdited.connect(self.__setModified)
 
-        self.__metaDescription = QLabel('Meta description')
         self.__metaDescriptionLine = QLineEdit()
-        self.__metaDescriptionLine.textEdited.connect(self.__markAsModified)
+        self.__metaDescriptionLine.textEdited.connect(self.__setModified)
 
-        self.__metaKeywords = QLabel('Meta keywords')
         self.__metaKeywordsLine = QLineEdit()
-        self.__metaKeywordsLine.textEdited.connect(self.__markAsModified)
+        self.__metaKeywordsLine.textEdited.connect(self.__setModified)
 
-        self.__tags = QLabel('Tags')
         self.__tagsLine = QLineEdit()
-        self.__tagsLine.textEdited.connect(self.__markAsModified)
+        self.__tagsLine.textEdited.connect(self.__setModified)
 
         self.__text = QLabel('Text')
         self.__textEdit = QTextEdit()
-        document = self.__textEdit.document()
-        document.modificationChanged.connect(self.__markAsModified)
+        self.__document = self.__textEdit.document()
+        self.__document.modificationChanged.connect(self.__documentModified)
 
-        contentLayout = QGridLayout()
-        contentLayout.addWidget(self.__idLabel, 0, 0)
-        contentLayout.addWidget(self.__idLine, 0, 1)
-        contentLayout.addWidget(self.__title, 1, 0)
-        contentLayout.addWidget(self.__titleLine, 1, 1)
-        contentLayout.addWidget(self.__description, 2, 0)
-        contentLayout.addWidget(self.__descriptionLine, 2, 1)
-        contentLayout.addWidget(self.__slug, 3, 0)
-        contentLayout.addWidget(self.__slugLine, 3, 1)
-        contentLayout.addWidget(self.__metaDescription, 4, 0)
-        contentLayout.addWidget(self.__metaDescriptionLine, 4, 1)
-        contentLayout.addWidget(self.__metaKeywords, 5, 0)
-        contentLayout.addWidget(self.__metaKeywordsLine, 5, 1)
-        contentLayout.addWidget(self.__tags, 6, 0)
-        contentLayout.addWidget(self.__tagsLine, 6, 1)
-        contentLayout.addWidget(self.__text, 7, 0)
-        contentLayout.addWidget(self.__textEdit, 7, 1)
+        contentLayout = QFormLayout()
+        contentLayout.addRow('ID', self.__idLine)
+        contentLayout.addRow('Title', self.__titleLine)
+        contentLayout.addRow('Description', self.__descriptionLine)
+        contentLayout.addRow('Slug', self.__slugLine)
+        contentLayout.addRow('Meta description', self.__metaDescriptionLine)
+        contentLayout.addRow('Meta keywords', self.__metaKeywordsLine)
+        contentLayout.addRow('Tags', self.__tagsLine)
+        contentLayout.addRow('Text', self.__textEdit)
         self.setLayout(contentLayout)
 
-    def __markAsModified(self):
-        'Marks this widget as modified'
-        self.setWindowModified(True)
+    def __setModified(self, modified=True):
+        'Sets the windowModified property of the main window to modified'
+        self.parent().parent().parent().setWindowModified(modified)
+
+    def __documentModified(self):
+        'Called when the document has been modified'
+        self.__setModified(self.__document.isModified())
 
 class CategoryEditPanel(QWidget):
     def __init__(self, parent=0):
@@ -170,41 +166,33 @@ class CategoryEditPanel(QWidget):
 
     def __createFormFields(self):
         'Creates the form fields'
-        self.__idLabel = QLabel('ID')
         self.__idLine = QLabel()
         
-        self.__title = QLabel('Title')
         self.__titleLine = QLineEdit()
         self.__titleLine.textEdited.connect(self.__markAsModified)
         
-        self.__description = QLabel('Description')
         self.__descriptionLine = QLineEdit()
         self.__descriptionLine.textEdited.connect(self.__markAsModified)
 
-        self.__slug = QLabel('Slug')
         self.__slugLine = QLineEdit()
         self.__slugLine.textEdited.connect(self.__markAsModified)
 
-        categoryLayout = QGridLayout()
-        categoryLayout.addWidget(self.__idLabel, 0, 0)
-        categoryLayout.addWidget(self.__idLine, 0, 1)
-        categoryLayout.addWidget(self.__title, 1, 0)
-        categoryLayout.addWidget(self.__titleLine, 1, 1)
-        categoryLayout.addWidget(self.__description, 2, 0)
-        categoryLayout.addWidget(self.__descriptionLine, 2, 1)
-        categoryLayout.addWidget(self.__slug, 3, 0)
-        categoryLayout.addWidget(self.__slugLine, 3, 1)
+        categoryLayout = QFormLayout()
+        categoryLayout.addRow('ID', self.__idLine)
+        categoryLayout.addRow('Title', self.__titleLine)
+        categoryLayout.addRow('Description', self.__descriptionLine)
+        categoryLayout.addRow('Slug', self.__slugLine)
         self.setLayout(categoryLayout)
 
     def __markAsModified(self):
         'Marks this widget as modified'
-        self.setWindowModified(True)
+        self.parent().parent().parent().setWindowModified(True)
 
 class PageEditPanel(QWidget):
     def __init__(self, parent=0):
         super(PageEditPanel, self).__init__(parent)
         self.__createFormFields()
-    
+
     def getData(self):
         'Returns the contents of the form fields'
         data = {
@@ -227,38 +215,28 @@ class PageEditPanel(QWidget):
 
     def __createFormFields(self):
         'Creates the form fields'
-        self.__idLabel = QLabel('ID')
         self.__idLine = QLabel()
         
-        self.__title = QLabel('Title')
         self.__titleLine = QLineEdit()
         self.__titleLine.textEdited.connect(self.__markAsModified)
         
-        self.__description = QLabel('Description')
         self.__descriptionLine = QLineEdit()
         self.__descriptionLine.textEdited.connect(self.__markAsModified)
 
-        self.__slug = QLabel('Slug')
         self.__slugLine = QLineEdit()
         self.__slugLine.textEdited.connect(self.__markAsModified)
 
-        self.__contentID = QLabel('Content-ID')
         self.__contentIDLine = QLineEdit()
         self.__contentIDLine.textEdited.connect(self.__markAsModified)
 
-        pageLayout = QGridLayout()
-        pageLayout.addWidget(self.__idLabel, 0, 0)
-        pageLayout.addWidget(self.__idLine, 0, 1)
-        pageLayout.addWidget(self.__title, 1, 0)
-        pageLayout.addWidget(self.__titleLine, 1, 1)
-        pageLayout.addWidget(self.__description, 2, 0)
-        pageLayout.addWidget(self.__descriptionLine, 2, 1)
-        pageLayout.addWidget(self.__slug, 3, 0)
-        pageLayout.addWidget(self.__slugLine, 3, 1)
-        pageLayout.addWidget(self.__contentID, 4, 0)
-        pageLayout.addWidget(self.__contentIDLine, 4, 1)
+        pageLayout = QFormLayout()
+        pageLayout.addRow('ID', self.__idLine)
+        pageLayout.addRow('Title', self.__titleLine)
+        pageLayout.addRow('Description', self.__descriptionLine)
+        pageLayout.addRow('Slug', self.__slugLine)
+        pageLayout.addRow('Content-ID', self.__contentIDLine)
         self.setLayout(pageLayout)
 
     def __markAsModified(self):
         'Marks this widget as modified'
-        self.setWindowModified(True)
+        self.parent().parent().parent().setWindowModified(True)

@@ -12,9 +12,8 @@ class Main:
         'Initializes the application'
         self.__application = QApplication(sys.argv)
         self.__application.setApplicationName('CMS API Client')
-        self.__application.setApplicationName('CMS API Client')
         self.__mainWindow = QMainWindow()
-        self.__mainWindow.setWindowTitle('[*]')
+        self.__mainWindow.setWindowTitle('CMS API Client [*]')
         # set up main window
         self.__contentPane = self.__createContentPane()
         self.__menuBar = self.__createMenuBar()
