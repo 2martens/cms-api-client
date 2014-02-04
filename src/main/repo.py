@@ -59,6 +59,6 @@ class TitleFileSystemModel(QFileSystemModel):
             filePath = self.filePath(index)
             jsonData = read_file(filePath)
             decodedData = json.loads(jsonData)
-            initialValue = decodedData['title']
+            initialValue = decodedData['id'] + ' - ' + decodedData['title']
 
         return initialValue
