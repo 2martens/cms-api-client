@@ -12,18 +12,24 @@ class Main:
         'Initializes the application'
         self.__application = QApplication(sys.argv)
         self.__application.setApplicationName('CMS API Client')
+        self.__application.setApplicationName('CMS API Client')
         self.__mainWindow = QMainWindow()
+        self.__mainWindow.setWindowTitle('[*]')
         # set up main window
         self.__contentPane = self.__createContentPane()
         self.__menuBar = self.__createMenuBar()
         self.__mainWindow.setCentralWidget(self.__contentPane)
         self.__mainWindow.setMenuBar(self.__menuBar)
         self.__mainWindow.show()
-        self.__application.exec()
+        self.__returnCode = self.__application.exec()
+
+    def returnCode(self):
+        'Returns the return code'
+        return self.__returnCode
 
     def __createContentPane(self):
         'Creates the central content pane'
-        contentPane = QWidget()
+        contentPane = QWidget(self.__mainWindow)
         splitter = QSplitter(contentPane)
         treeView = TreeView(splitter)
         splitter.addWidget(treeView)
@@ -66,4 +72,5 @@ class Main:
 
 if __name__ == '__main__':
     import core
-    core.Main()
+    main = core.Main()
+    sys.exit(main.returnCode())
